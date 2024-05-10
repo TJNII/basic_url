@@ -6,10 +6,10 @@ require_relative "basic_url/errors"
 class BasicUrl
   def self.urldecode_component(input)
     return nil if input.nil?
-    
+
     return URI.decode_www_form_component(input)
   end
-  
+
   def self.parse(input, **kwargs)
     input = input.downcase
 
@@ -38,7 +38,7 @@ class BasicUrl
           raise(Errors::InvalidURL, "Parameter #{pair} at index #{index + 1} failed to parse as a key-value pair") if pair.length != 2
 
           value = urldecode_component(pair[1])
-      
+
           if pair[0][-2..-1] == '[]'
             key =  urldecode_component(pair[0][0..-3])
             params_hash[key] ||= []
@@ -68,21 +68,21 @@ class BasicUrl
   end
 
   attr_reader :default_protocol, :fragment, :host, :params, :password, :path_components, :port, :protocol, :user
-  
+
   [:protocol, :host, :port, :path_components, :params, :fragment, :user, :password].each do |component|
     define_method("#{component}=") do |value|
       _validate_component(component: component, value: value)
       instance_variable_set("@#{component}", value)
     end
   end
-    
+
   def initialize(**kwargs)
     @path_components = []
     @default_protocol = kwargs.delete(:default_protocol)
 
     raise(ArgumentError, ':path and :path_components are exclusive') if kwargs.key(:path) && kwargs.key(:path_components)
 
-    defaults = { 
+    defaults = {
       protocol: @default_protocol,
       host: nil,
       port: _default_port_for_protocol(protocol: @default_protocol),
@@ -133,7 +133,7 @@ class BasicUrl
       @path_components = _path_to_a(value: value)
     end
   end
-  
+
   def path
     return nil if @path_components.empty?
     return @path_components.join('/')
@@ -168,7 +168,7 @@ class BasicUrl
   def urlencode_component(value)
     return URI.encode_www_form_component(value.to_s)
   end
-  
+
   private
 
   def _default_port_for_protocol(protocol:)
@@ -210,7 +210,7 @@ class BasicUrl
     _validate_component_type(**kwargs)
     _validate_component_characters(**kwargs)
   end
-    
+
   def _validate_component_characters(component:, value:)
     case component
     when :default_protocol, :protocol
@@ -223,7 +223,7 @@ class BasicUrl
         disallowed_chars = %w[@ / ? & #]
       else
         disallowed_chars = %w[@ : / ? & #]
-      end        
+      end
     when :path
       disallowed_chars = %w[? #]
     when :path_components
@@ -241,11 +241,11 @@ class BasicUrl
     else
       raise(Errors::InternalError, "Unknown component #{component}")
     end
-    
+
     disallowed_chars.each do |dchar|
       raise(Errors::InvalidComponent, "#{component} contains disallowed character #{dchar}") if value.include?(dchar)
     end
-  end       
+  end
 
   def _validate_component_type(component:, value:)
     types = {

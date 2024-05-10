@@ -33,11 +33,11 @@ describe BasicUrl do
       fragment: "##{test_components[:fragment]}"
     }
   end
-  
+
   let(:input_url) do
     url_test_components.select { |k, _| test_enabled_url_component_keys.include?(k) }.values.join
   end
-  
+
   describe '.parse' do
     shared_examples 'parsing' do
       let(:expected_components) { default_components.merge(test_enabled_url_components) }
@@ -107,7 +107,7 @@ describe BasicUrl do
         end
       end
     end
-    
+
     describe 'when passed a complete, complex URL' do
       it_behaves_like 'parsing'
     end
@@ -137,7 +137,7 @@ describe BasicUrl do
 
       filtered_permutations.each do |permutation|
         enabled_components = permutation.select { |_, v| v }.keys
-        
+
         describe "When the URL contains #{enabled_components} components" do
           let(:test_enabled_url_component_keys) { enabled_components }
 
@@ -155,7 +155,7 @@ describe BasicUrl do
           protocol: Helpers::Random.word,
           host: Helpers::Random.word
         }
-      end          
+      end
 
       let(:input_url) { "#{test_components[:protocol]}://#{test_components[:host]}" }
 
@@ -167,20 +167,20 @@ describe BasicUrl do
         {
           host: Array.new(2) { Helpers::Random.word }.join('.')
         }
-      end          
+      end
 
       let(:input_url) { test_components[:host] }
 
       it_behaves_like 'parsing'
     end
-    
+
     describe 'when passed a bare fqdn & port' do
       let(:test_components) do
         {
           host: Array.new(2) { Helpers::Random.word }.join('.'),
-          port: rand(1..0xffff) 
+          port: rand(1..0xffff)
         }
-      end          
+      end
 
       let(:input_url) { "#{test_components[:host]}:#{test_components[:port]}" }
 
@@ -192,7 +192,7 @@ describe BasicUrl do
         {
           host: '192.0.2.42'
         }
-      end          
+      end
 
       let(:input_url) { test_components[:host] }
 
@@ -206,7 +206,7 @@ describe BasicUrl do
           # Brackets: https://www.ietf.org/rfc/rfc2732.txt
           host: '[2001:db8::ba5e:ba11]'
         }
-      end          
+      end
 
       let(:input_url) { "#{test_components[:protocol]}://#{test_components[:host]}" }
 
@@ -219,9 +219,9 @@ describe BasicUrl do
           protocol: Helpers::Random.word,
           # Brackets: https://www.ietf.org/rfc/rfc2732.txt
           host: '[2001:db8::beef]',
-          port: rand(1..0xffff) 
+          port: rand(1..0xffff)
         }
-      end          
+      end
 
       let(:input_url) { "#{test_components[:protocol]}://#{test_components[:host]}:#{test_components[:port]}" }
 
@@ -238,7 +238,7 @@ describe BasicUrl do
             'array_key' => %w[array_value_1 array_value_2 array_value_3]
           }
         }
-      end          
+      end
 
       let(:input_url) { "#{test_components[:protocol]}://#{test_components[:host]}?simple_key=simple_value&array_key[]=array_value_1&array_key[]=array_value_2&array_key[]=array_value_3" }
 
@@ -251,7 +251,7 @@ describe BasicUrl do
       it 'raises InvalidURL' do
         expect { described_class.parse(input_url) }.to raise_exception(described_class::Errors::InvalidURL)
       end
-    end                                                       
+    end
 
     describe 'when passed invalid query parameters' do
       let(:input_url) { "http://foo/bar?param&param" }
@@ -264,7 +264,7 @@ describe BasicUrl do
 
   describe 'basic attributes' do
     subject { described_class.new }
-    
+
     [:protocol, :host, :port, :path, :params, :fragment, :user, :password].each do |param|
       describe param.to_s do
         it 'defaults to empty' do
@@ -286,16 +286,16 @@ describe BasicUrl do
           it 'urlencodes in the to_s output' do
             subject.protocol = 'foo'
             subject.host = 'bar'
-            
+
             test_value_parts = Array.new(3) { Helpers::Random.word(length: 5) }
             test_value_raw = "#{test_value_parts[0]}!#{test_value_parts[1]}[#{test_value_parts[2]}]"
             test_value_encoded = "#{test_value_parts[0]}%21#{test_value_parts[1]}%5b#{test_value_parts[2]}%5d"
-            
+
             expect(subject.to_s.downcase).to_not include(test_value_raw)
             expect(subject.to_s.downcase).to_not include(test_value_encoded)
             subject.send("#{param}=", test_value_raw)
             expect(subject.send(param)).to eq(test_value_raw)
-            
+
             expect(subject.to_s.downcase).to_not include(test_value_raw)
             expect(subject.to_s.downcase).to include(test_value_encoded)
           end
@@ -305,11 +305,11 @@ describe BasicUrl do
           it 'urlencodes in the to_s output' do
             subject.protocol = 'foo'
             subject.host = 'bar'
-            
+
             test_value_parts = Array.new(3) { Helpers::Random.word(length: 5) }
             test_value_raw = "#{test_value_parts[0]}!#{test_value_parts[1]}[#{test_value_parts[2]}]"
             test_value_encoded = "#{test_value_parts[0]}%21#{test_value_parts[1]}%5b#{test_value_parts[2]}%5d"
-            
+
             expect(subject.to_s.downcase).to_not include(test_value_raw)
             expect(subject.to_s.downcase).to_not include(test_value_encoded)
             subject.params[:key] = test_value_raw
@@ -388,7 +388,7 @@ describe BasicUrl do
       a_trailing_slash = ((ti & 0x02) != 0)
       b_absolute       = ((ti & 0x04) != 0)
       b_trailing_slash = ((ti & 0x08) != 0)
-      
+
       describe "When path A #{a_absolute ? 'is' : 'is not'} absolute" do
         describe "When path A #{a_trailing_slash ? 'has' : 'does not have'} a trailing slash" do
           describe "When path B #{b_absolute ? 'is' : 'is not'} absolute" do
@@ -404,7 +404,7 @@ describe BasicUrl do
                     components.append(nil) if a_trailing_slash
                     components.join('/')
                   end
-                  
+
                   let(:test_path_b) do
                     components = test_path_b_core_components.dup
                     components.insert(0, nil) if b_absolute
@@ -422,7 +422,7 @@ describe BasicUrl do
                   end
 
                   let(:combined_test_path_components) { test_path_a_core_components + test_path_b_core_components }
-                  
+
                   subject { described_class.new(**test_components.merge({path: test_path_a})) }
 
                   describe '.join' do
@@ -438,17 +438,17 @@ describe BasicUrl do
                     it 'matches all other params to the parent' do
                       test_components.each do |component, value|
                         next if component == :path
-                        
+
                         expect(test_join_output.send(component)).to eq(value)
                       end
                     end
-                  
+
                     it 'does not modify the original object' do
                       expect(subject.path_components).to eq test_path_a_core_components
-                      expect(test_join_output.object_id).to_not eq(subject.object_id) 
+                      expect(test_join_output.object_id).to_not eq(subject.object_id)
                       expect(subject.path_components).to eq test_path_a_core_components
-                    end                 
-                  
+                    end
+
                     if replace_when_absolute != false && b_absolute
                       it 'replaces path A with path B' do
                         expect(test_join_output.path_components).to eq test_path_b_core_components
@@ -495,7 +495,7 @@ describe BasicUrl do
       end
     end
   end
-  
+
   describe '.path_components' do
     subject { described_class.new(path: test_components[:path]) }
 
@@ -504,4 +504,4 @@ describe BasicUrl do
     end
   end
 end
-    
+
