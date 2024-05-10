@@ -19,7 +19,7 @@ describe BasicUrl do
   let(:test_enabled_url_component_keys) { test_components.keys }
   let(:test_enabled_url_components) { test_components.select { |k, _| test_enabled_url_component_keys.include?(k) } }
 
-  let(:encoded_params) { test_components[:params].map { |k,v| "#{k}=#{v}" }.join('&') }
+  let(:encoded_params) { test_components[:params].map { |k, v| "#{k}=#{v}" }.join('&') }
 
   let(:url_test_components) do
     {
@@ -114,17 +114,17 @@ describe BasicUrl do
 
     describe 'complex permutations' do
       params = {
-        :protocol=>[:host],
-        :host=>[],
-        :port=>[:host],
-        :path=>[:host],
-        :params=>[:host],
-        :fragment=>[:host],
-        :user=>[:host],
-        :password=>[:host]
+        :protocol => [:host],
+        :host => [],
+        :port => [:host],
+        :path => [:host],
+        :params => [:host],
+        :fragment => [:host],
+        :user => [:host],
+        :password => [:host]
       }
 
-      raw_permutations = Array.new(2**(params.length)) { |i| params.keys.map.with_index { |k, ki| [k, ((i & (1 << ki)) != 0) ] }.to_h }
+      raw_permutations = Array.new(2**(params.length)) { |i| params.keys.map.with_index { |k, ki| [k, ((i & (1 << ki)) != 0)] }.to_h }
       filtered_permutations = raw_permutations.reject do |permutation|
         if permutation.values.any?
           params.map do |param, dependencies|
@@ -240,7 +240,9 @@ describe BasicUrl do
         }
       end
 
-      let(:input_url) { "#{test_components[:protocol]}://#{test_components[:host]}?simple_key=simple_value&array_key[]=array_value_1&array_key[]=array_value_2&array_key[]=array_value_3" }
+      let(:input_url) {
+        "#{test_components[:protocol]}://#{test_components[:host]}?simple_key=simple_value&array_key[]=array_value_1&array_key[]=array_value_2&array_key[]=array_value_3"
+      }
 
       it_behaves_like 'parsing'
     end
@@ -417,13 +419,13 @@ describe BasicUrl do
                     when :default
                       {}
                     else
-                      {replace_when_absolute: replace_when_absolute}
+                      { replace_when_absolute: replace_when_absolute }
                     end
                   end
 
                   let(:combined_test_path_components) { test_path_a_core_components + test_path_b_core_components }
 
-                  subject { described_class.new(**test_components.merge({path: test_path_a})) }
+                  subject { described_class.new(**test_components.merge({ path: test_path_a })) }
 
                   describe '.join' do
                     let(:test_join_output) do
@@ -478,7 +480,7 @@ describe BasicUrl do
                         expect(test_join_output).to eq test_path_b_core_components.join('/')
                         expect(subject.path_components).to eq test_path_b_core_components
                         expect(subject.path).to eq(test_path_b_core_components.join('/'))
-                        end
+                      end
                     else
                       it 'appends path B to path A' do
                         expect(test_join_output).to eq(combined_test_path_components.join('/'))
@@ -504,4 +506,3 @@ describe BasicUrl do
     end
   end
 end
-

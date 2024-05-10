@@ -40,7 +40,7 @@ class BasicUrl
           value = urldecode_component(pair[1])
 
           if pair[0][-2..-1] == '[]'
-            key =  urldecode_component(pair[0][0..-3])
+            key = urldecode_component(pair[0][0..-3])
             params_hash[key] ||= []
             params_hash[key].push(value)
           else
@@ -55,12 +55,12 @@ class BasicUrl
 
     components = {
       protocol: proto,
-      host:     uri_obj.host,
-      port:     uri_obj.port,
-      path:     uri_obj.path,
-      params:   params_hash,
+      host: uri_obj.host,
+      port: uri_obj.port,
+      path: uri_obj.path,
+      params: params_hash,
       fragment: urldecode_component(uri_obj.fragment),
-      user:     urldecode_component(uri_obj.user),
+      user: urldecode_component(uri_obj.user),
       password: urldecode_component(uri_obj.password)
     }.reject { |_, v| v.to_s.empty? }
 
@@ -136,11 +136,13 @@ class BasicUrl
 
   def path
     return nil if @path_components.empty?
+
     return @path_components.join('/')
   end
 
   def path_encoded
     return nil if @path_components.empty?
+
     return @path_components.map { |c| urlencode_component(c) }.join('/')
   end
 
@@ -174,7 +176,7 @@ class BasicUrl
   def _default_port_for_protocol(protocol:)
     return nil if protocol.nil?
 
-    rv =  URI.parse("#{protocol}://").port
+    rv = URI.parse("#{protocol}://").port
     return rv
   end
 
