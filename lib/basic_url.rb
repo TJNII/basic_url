@@ -61,7 +61,7 @@ class BasicUrl
       params: params_hash,
       fragment: urldecode_component(uri_obj.fragment),
       user: urldecode_component(uri_obj.user),
-      password: urldecode_component(uri_obj.password)
+      password: urldecode_component(uri_obj.password),
     }.reject { |_, v| v.to_s.empty? }
 
     return new(**kwargs.merge(components))
@@ -69,7 +69,7 @@ class BasicUrl
 
   attr_reader :default_protocol, :fragment, :host, :params, :password, :path_components, :port, :protocol, :user
 
-  [:protocol, :host, :port, :path_components, :params, :fragment, :user, :password].each do |component|
+  %i[protocol host port path_components params fragment user password].each do |component|
     define_method("#{component}=") do |value|
       _validate_component(component: component, value: value)
       instance_variable_set("@#{component}", value)
@@ -89,11 +89,11 @@ class BasicUrl
       params: {},
       fragment: nil,
       user: nil,
-      password: nil
+      password: nil,
     }
 
-    defaults.merge(kwargs.reject { |_, v| v.nil? }).sort.each do |component, value|
-      self.send("#{component}=", value)
+    defaults.merge(kwargs.compact).sort.each do |component, value|
+      send("#{component}=", value)
     end
   end
 
@@ -101,13 +101,13 @@ class BasicUrl
     _validate_component(component: :path, value: value)
     new_components = _path_to_a(value: value)
 
-    rv = self.dup
+    rv = dup
 
-    if replace_when_absolute && value[0] == '/'
-      rv.path_components = new_components
-    else
-      rv.path_components = @path_components + new_components
-    end
+    rv.path_components = if replace_when_absolute && value[0] == '/'
+                           new_components
+                         else
+                           @path_components + new_components
+                         end
 
     return rv
   end
@@ -219,13 +219,13 @@ class BasicUrl
       # Basic URL building symbols
       disallowed_chars = %w[@ : / ? & #]
     when :host
-      if value[0] == '[' && value[-1] == ']'
-        # IPv6
-        # This should technically be more strict, but this is a minimal sanity check
-        disallowed_chars = %w[@ / ? & #]
-      else
-        disallowed_chars = %w[@ : / ? & #]
-      end
+      disallowed_chars = if value[0] == '[' && value[-1] == ']'
+                           # IPv6
+                           # This should technically be more strict, but this is a minimal sanity check
+                           %w[@ / ? & #]
+                         else
+                           %w[@ : / ? & #]
+                         end
     when :path
       disallowed_chars = %w[? #]
     when :path_components
@@ -260,7 +260,7 @@ class BasicUrl
       params: Hash,
       fragment: String,
       user: String,
-      password: String
+      password: String,
     }
 
     raise(Errors::InternalError, "Unknown component #{component}") unless types.key?(component)

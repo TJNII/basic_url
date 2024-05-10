@@ -1,15 +1,15 @@
-require_relative "lib/basic_url/version"
+require_relative 'lib/basic_url/version'
 
 Gem::Specification.new do |spec|
-  spec.name = "basic_url"
+  spec.name = 'basic_url'
   spec.version = BasicUrl::VERSION
-  spec.authors = ["Tom Noonan II"]
-  spec.email = ["tom@tjnii.com"]
+  spec.authors = ['Tom Noonan II']
+  spec.email = ['tom@tjnii.com']
 
-  spec.summary = "A Simple URL object that supports common URL operations"
+  spec.summary = 'A Simple URL object that supports common URL operations'
   #  spec.description = "TODO: Write a longer description or delete this line."
   #  spec.homepage = "TODO: Put your gem's website or public repo URL here."
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = '>= 3.0.0'
 
   #  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
@@ -25,9 +25,9 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
   end
-  spec.bindir = "exe"
+  spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
   spec.add_development_dependency 'rspec', '~> 3.8'
   spec.add_development_dependency 'rubocop', '~> 1.60'

@@ -66,6 +66,10 @@ Style/ParenthesesAroundCondition:
 Style/RedundantParentheses:
   Enabled: false
 
+# Do not remove explicit range ends
+Style/SlicingWithRange:
+  Enabled: false
+
 # Allow $? instead of $CHILD_STATUS (which isn't native)
 Style/SpecialGlobalVars:
   Enabled: false
