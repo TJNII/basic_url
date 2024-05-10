@@ -1,0 +1,75 @@
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+
+# Fucking no.
+Layout/HeredocIndentation:
+  Enabled: false
+
+# You know, I remember when this gave useful, sensible feedback and not "I don't like your name" bullshit
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 180
+
+# Just turn off the metrics cops.  Long lines and methods are fine.
+# This project prefers large, logical blocks to "papering the wall with post-its"
+Metrics:
+  Enabled: false
+
+# 'exc' is just as good, if not better, as 'e'
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+
+# 123_456 doesn't add value IMO.
+NumericLiterals:
+  Enabled: false
+
+# Favor explicit over implicit code: don't complain of "redundant returns"
+RedundantReturn:
+  Enabled: false
+
+Style/ArgumentsForwarding:
+  UseAnonymousForwarding: false
+
+# A "This class manages the App Config" comment on App::Config has no value.
+Style/Documentation:
+  Enabled: false
+
+# This cop can result in incompatible code
+Style/EmptyLiteral:
+  Enabled: false
+
+# Ruby 3.0 upgrade cop
+# Literally recommends "magic" code.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashSyntax:
+  # Explicit over implicit code
+  EnforcedShorthandSyntax: never
+
+# `lambda {}` is more readable than `-> {}`
+Style/Lambda:
+  Enabled: false
+
+# value == 0 is fine, value.zero? is syntactic nonsense.
+Style/NumericPredicate:
+  Enabled: false
+
+# Not adding parenthesis can introduce bugs in complex conditions
+Style/ParenthesesAroundCondition:
+  Enabled: false
+
+# Not adding parenthesis can introduce bugs in complex conditions
+Style/RedundantParentheses:
+  Enabled: false
+
+# Allow $? instead of $CHILD_STATUS (which isn't native)
+Style/SpecialGlobalVars:
+  Enabled: false
+
+# Enforce trailing commas on multiline hashes.  This reduces developer error.
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
