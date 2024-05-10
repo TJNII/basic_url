@@ -248,7 +248,7 @@ describe BasicUrl do
     end
 
     describe 'when passed an invalid URL' do
-      let(:input_url) { "7foo:[)URL:192.168.745.-4" }
+      let(:input_url) { '7foo:[)URL:192.168.745.-4' }
 
       it 'raises InvalidURL' do
         expect { described_class.parse(input_url) }.to raise_exception(described_class::Errors::InvalidURL)
@@ -256,7 +256,7 @@ describe BasicUrl do
     end
 
     describe 'when passed invalid query parameters' do
-      let(:input_url) { "http://foo/bar?param&param" }
+      let(:input_url) { 'http://foo/bar?param&param' }
 
       it 'raises InvalidURL' do
         expect { described_class.parse(input_url) }.to raise_exception(described_class::Errors::InvalidURL)

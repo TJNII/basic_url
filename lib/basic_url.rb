@@ -1,7 +1,7 @@
 require 'uri'
 
-require_relative "basic_url/version"
-require_relative "basic_url/errors"
+require_relative 'basic_url/version'
+require_relative 'basic_url/errors'
 
 class BasicUrl
   def self.urldecode_component(input)
