@@ -15,7 +15,7 @@ describe BasicUrl do
       params: Array.new(3) { [Helpers::Random.word, Helpers::Random.word] }.to_h,
       fragment: Helpers::Random.word,
       user: Helpers::Random.word,
-      password: Helpers::Random.word
+      password: Helpers::Random.word,
     }
   end
 
@@ -33,7 +33,7 @@ describe BasicUrl do
       port: ":#{test_components[:port]}",
       path: "/#{test_components[:path]}",
       params: "?#{encoded_params}",
-      fragment: "##{test_components[:fragment]}"
+      fragment: "##{test_components[:fragment]}",
     }
   end
 
@@ -55,7 +55,7 @@ describe BasicUrl do
             params: {},
             fragment: nil,
             user: nil,
-            password: nil
+            password: nil,
           }
         end
 
@@ -86,7 +86,7 @@ describe BasicUrl do
             params: {},
             fragment: nil,
             user: nil,
-            password: nil
+            password: nil,
           }
         end
 
@@ -117,14 +117,14 @@ describe BasicUrl do
 
     describe 'complex permutations' do
       params = {
-        :protocol => [:host],
-        :host => [],
-        :port => [:host],
-        :path => [:host],
-        :params => [:host],
-        :fragment => [:host],
-        :user => [:host],
-        :password => [:host]
+        protocol: [:host],
+        host: [],
+        port: [:host],
+        path: [:host],
+        params: [:host],
+        fragment: [:host],
+        user: [:host],
+        password: [:host],
       }
 
       raw_permutations = Array.new(2**(params.length)) { |i| params.keys.map.with_index { |k, ki| [k, ((i & (1 << ki)) != 0)] }.to_h }
@@ -156,7 +156,7 @@ describe BasicUrl do
       let(:test_components) do
         {
           protocol: Helpers::Random.word,
-          host: Helpers::Random.word
+          host: Helpers::Random.word,
         }
       end
 
@@ -168,7 +168,7 @@ describe BasicUrl do
     describe 'when passed a bare fqdn' do
       let(:test_components) do
         {
-          host: Array.new(2) { Helpers::Random.word }.join('.')
+          host: Array.new(2) { Helpers::Random.word }.join('.'),
         }
       end
 
@@ -181,7 +181,7 @@ describe BasicUrl do
       let(:test_components) do
         {
           host: Array.new(2) { Helpers::Random.word }.join('.'),
-          port: rand(1..0xffff)
+          port: rand(1..0xffff),
         }
       end
 
@@ -193,7 +193,7 @@ describe BasicUrl do
     describe 'when passed a IPv4 address' do
       let(:test_components) do
         {
-          host: '192.0.2.42'
+          host: '192.0.2.42',
         }
       end
 
@@ -207,7 +207,7 @@ describe BasicUrl do
         {
           protocol: Helpers::Random.word,
           # Brackets: https://www.ietf.org/rfc/rfc2732.txt
-          host: '[2001:db8::ba5e:ba11]'
+          host: '[2001:db8::ba5e:ba11]',
         }
       end
 
@@ -222,7 +222,7 @@ describe BasicUrl do
           protocol: Helpers::Random.word,
           # Brackets: https://www.ietf.org/rfc/rfc2732.txt
           host: '[2001:db8::beef]',
-          port: rand(1..0xffff)
+          port: rand(1..0xffff),
         }
       end
 
@@ -238,14 +238,14 @@ describe BasicUrl do
           host: Helpers::Random.word,
           params: {
             'simple_key' => 'simple_value',
-            'array_key' => %w[array_value_1 array_value_2 array_value_3]
-          }
+            'array_key' => %w[array_value_1 array_value_2 array_value_3],
+          },
         }
       end
 
-      let(:input_url) {
+      let(:input_url) do
         "#{test_components[:protocol]}://#{test_components[:host]}?simple_key=simple_value&array_key[]=array_value_1&array_key[]=array_value_2&array_key[]=array_value_3"
-      }
+      end
 
       it_behaves_like 'parsing'
     end
@@ -270,7 +270,7 @@ describe BasicUrl do
   describe 'basic attributes' do
     subject { described_class.new }
 
-    [:protocol, :host, :port, :path, :params, :fragment, :user, :password].each do |param|
+    %i[protocol host port path params fragment user password].each do |param|
       describe param.to_s do
         it 'defaults to empty' do
           case param
@@ -287,7 +287,7 @@ describe BasicUrl do
           expect(subject.send(param)).to eq(test_components.fetch(param))
         end
 
-        if [:path, :fragment, :user, :password].include?(param)
+        if %i[path fragment user password].include?(param)
           it 'urlencodes in the to_s output' do
             subject.protocol = 'foo'
             subject.host = 'bar'
@@ -347,7 +347,7 @@ describe BasicUrl do
               params: [],
               fragment: true,
               user: %w[testuser],
-              password: :password
+              password: :password,
             }
           end
 
@@ -356,7 +356,7 @@ describe BasicUrl do
           end
         end
 
-        if [:default_protocol, :protocol, :host, :path].include?(param)
+        if %i[default_protocol protocol host path].include?(param)
           it 'Throws InvalidComponent when passed a disallowed symbol' do
             expect { subject.send("#{param}=", 'foo#bar?baz') }.to raise_exception(described_class::Errors::InvalidComponent)
           end
