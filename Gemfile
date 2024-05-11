@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in basic_url.gemspec
 gemspec
 
-gem 'rake', '~> 13.0'
+group :development do
+  gem 'rspec', '~> 3.8'
+  gem 'rubocop', '~> 1.60'
+  gem 'simplecov', '~> 0.16'
+end

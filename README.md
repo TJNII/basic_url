@@ -59,9 +59,14 @@ puts controller.to_s
 # https://192.0.2.64/api/v1/some/controller?key1=val1&key2=val2
 ```
 
-
 ## Contributing
 
-TODO
+All support is through Github issues.
+Questions, bug reports and pull requests are accepted at https://github.com/TJNII/basic_url.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/basic_url.
+This is an opinionated project, the author was finally annoyed enough by using Pathname to join URL components to publish this.
+This project will not support the `a + b + c + d = d` behavior of other implementations, if you require that perhaps Adressable::URI would be better.
+
+For the quickest response please add a test case.
+
+Hope this helped you, have a good day.
