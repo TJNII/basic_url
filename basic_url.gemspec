@@ -1,10 +1,9 @@
-require_relative 'lib/basic_url/version'
-
 Gem::Specification.new do |spec|
   spec.name = 'basic_url'
-  spec.version = BasicUrl::VERSION
+  spec.version = `./cicd/current_gem_version.sh`
   spec.authors = ['Tom Noonan II']
   spec.email = ['tom@tjnii.com']
+  spec.licenses = ['Apache-2.0']
 
   spec.summary = 'A Basic URL object that supports common URL operations'
   spec.description = 'Implements a simple URL object supporting object oriented paradigms, basic as-you-expect path joins, and native URLencoding.'

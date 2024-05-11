@@ -2,8 +2,6 @@
 # (C)2024 Tom Noonan II
 
 require 'uri'
-
-require_relative 'basic_url/version'
 require_relative 'basic_url/errors'
 
 class BasicUrl
