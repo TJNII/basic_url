@@ -1,3 +1,6 @@
+# Licensed under the Apache 2 License
+# (C)2024 Tom Noonan II
+
 require 'simplecov'
 
 RSpec.configure do |rspec|

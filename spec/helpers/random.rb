@@ -1,3 +1,6 @@
+# Licensed under the Apache 2 License
+# (C)2024 Tom Noonan II
+
 module Helpers
   module Random
     def self.word(length: rand(10..50))

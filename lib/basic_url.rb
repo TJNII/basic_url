@@ -1,3 +1,6 @@
+# Licensed under the Apache 2 License
+# (C)2024 Tom Noonan II
+
 require 'uri'
 
 require_relative 'basic_url/version'

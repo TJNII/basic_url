@@ -1,7 +1,7 @@
 BasicUrl
 ========
 
-A simple class that provides basic URL operations.
+A simple Ruby module that provides basic URL operations.
 
 This implementation supports:
 

@@ -1,3 +1,6 @@
+# Licensed under the Apache 2 License
+# (C)2024 Tom Noonan II
+
 require './spec/helpers/spec_helper'
 require './spec/helpers/random'
 require './lib/basic_url'
