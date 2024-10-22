@@ -19,7 +19,7 @@ If you need full RFC compliance this gem is not suitable.
 ## Usage
 
 ```ruby
-require 'BasicURL'
+require 'basic_url'
 
 base_url = BasicUrl.parse('192.0.2.64/api/v1', default_protocol: 'https')
 
