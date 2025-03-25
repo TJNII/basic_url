@@ -57,6 +57,10 @@ controller.params = { key1: 'val1' }
 controller.params[:key2] = 'val2'
 puts controller.to_s
 # https://192.0.2.64/api/v1/some/controller?key1=val1&key2=val2
+
+# Pass enforce_trailing_path_slash: true to to_s to always include a trailing / on the path parameter
+puts base_url.to_s(enforce_trailing_path_slash: true)
+# https://192.0.2.64/api/v1/
 ```
 
 ## Contributing

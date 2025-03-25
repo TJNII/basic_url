@@ -147,7 +147,7 @@ class BasicUrl
     return @path_components.map { |c| urlencode_component(c) }.join('/')
   end
 
-  def to_s
+  def to_s(enforce_trailing_path_slash: false)
     %i[protocol host].each do |required_component|
       raise(Errors::InvalidURL, "Missing #{required_component}") unless send(required_component)
     end
@@ -162,6 +162,7 @@ class BasicUrl
     ret_val += host
     ret_val += ":#{port}" if port && port != _default_port_for_protocol(protocol: protocol)
     ret_val += "/#{path_encoded}" unless @path_components.empty?
+    ret_val += '/' if enforce_trailing_path_slash
     ret_val += _query_string unless params.empty?
     ret_val += "##{urlencode_component(fragment)}" if fragment
 

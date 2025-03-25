@@ -508,4 +508,52 @@ describe BasicUrl do
       expect(subject.path_components).to eq(test_components[:path].split('/'))
     end
   end
+
+  describe '.to_s' do
+    optional_params = %i[port path params fragment user password]
+    mandatory_params = %i[protocol host]
+
+    optional_permutations = Array.new(optional_params.length + 1) { |l| optional_params.permutation(l) }.map(&:to_a).flatten(1).map(&:sort).sort.uniq
+    optional_permutations.map { |perm| perm + mandatory_params }.each do |test_component_permutation_keys|
+      describe "When #{test_component_permutation_keys.join(',')} are set" do
+        let(:test_enabled_url_component_keys) { test_component_permutation_keys }
+        let(:subject_kwargs) { test_component_permutation_keys.to_h { |k| [k, test_components.fetch(k)] } }
+        subject { described_class.new(**subject_kwargs) }
+
+        # NOTE: This sets the component order to inject the slash on the path param
+        let(:output_url_test_component_keys) { %i[protocol user password host port path trailing_path_slash params fragment] }
+        let(:output_url_test_components) do
+          full_url_test_components = url_test_components.merge(trailing_path_slash: '/')
+
+          output_url_test_component_keys.to_h do |k|
+            [k, full_url_test_components.fetch(k)]
+          end
+        end
+
+        let(:output_url) do
+          output_url_test_components.select { |k, _| test_enabled_url_component_keys.include?(k) }.values.join
+        end
+
+        it 'encodes the URL' do
+          expect(subject.to_s).to eq output_url
+        end
+
+        describe 'enforce_trailing_path_slash' do
+          it 'defaults to false' do
+            expect(subject.to_s).to eq output_url
+            expect(subject.to_s(enforce_trailing_path_slash: false)).to eq output_url
+          end
+
+          describe 'when enabled' do
+            let(:test_enabled_url_component_keys) { test_component_permutation_keys + %i[trailing_path_slash] }
+
+            it 'adds a slash to the path' do
+              expect(subject.to_s).to_not eq output_url
+              expect(subject.to_s(enforce_trailing_path_slash: true)).to eq output_url
+            end
+          end
+        end
+      end
+    end
+  end
 end
