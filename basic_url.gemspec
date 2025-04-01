@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'A Basic URL object that supports common URL operations'
   spec.description = 'Implements a simple URL object supporting object oriented paradigms, basic as-you-expect path joins, and native URLencoding.'
   spec.homepage = 'https://github.com/TJNII/basic_url'
-  spec.required_ruby_version = '>= 3.2.0'
+  spec.required_ruby_version = '>= 3.0.0'
 
   #  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
